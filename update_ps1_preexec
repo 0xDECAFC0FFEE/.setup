@@ -1,0 +1,76 @@
+#! /usr/bin/zsh
+
+# update PS1
+function preexec() {
+    PS1_EXECUTING_CMD=1
+    PS1_START_TIME=`date +%r`;
+    PS1_START_TIME_SEC=`date +%s`
+}
+function PS1_python_ver_env() {
+    # printing the python version and the python environment
+
+    # getting the python version
+    if [[ -f .python-version ]]; then
+        local python_version=`pyenv local`
+        if [[ $python_version != `pyenv global` ]]; then 
+            echo -n "%F{blue} "$python_version
+        fi
+    else
+        local python_version=`pyenv global`
+    fi
+
+    # printing python env info
+    if [[ $python_version == "anaconda"* ]]; then
+        # if python version is anaconda and not in base environment
+        local env_name=`echo $CONDA_PREFIX | rev | cut -d "/" -f1 | rev`
+        if [[ $env_name != $python_version ]]; then
+            echo -n "%F{blue} "$env_name
+        fi
+    elif [[ $python_version =~ "[0-9]\.[0-9].*" ]] && [[ $PYENV_VERSION ]]; then
+        # if python version is cython and in an environment
+        echo -n "%F{blue} "$PYENV_VERSION
+    fi
+}
+function PS1_git() {
+    # printing the git branch name if its a git repo
+    git_status=`git diff --stat 2> /dev/null`;
+    if [[ $? -eq 0 ]]; then
+        echo -n " %F{green}(`git branch | grep \* | cut -d ' ' -f2` "
+        if [[ -z $git_status ]]; then
+            echo -n "✓"
+        else
+            echo -n "%F{red}✘%F{green}"
+        fi
+        echo -n ")"
+    fi
+}
+function PS1_ssh() {
+    # if in a ssh session print the username and hostname
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        echo -n "%F{008}[%F{033}`whoami`@`hostname`%F{008}] "
+    fi
+}
+function precmd() {
+    # printing the error code if the last line ended in an error
+    local errorcode="$?"
+    if [ ${errorcode} != 0 ]; then
+        echo "\e[90m╰─❰\e[1;31merror $errorcode\e[90m❱\n\e[39;0m"
+    fi
+
+    # printing the time it took to run the last command
+    local end_time_sec=`date +%s`;
+    local runtime=$((end_time_sec-PS1_START_TIME_SEC)) # yeah millisecond not exact but speed more important
+    if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME_SEC -gt 0 ]] && [[ $runtime -gt 0 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
+        local end_time=`date +%r`;
+        echo "\e[90m "$runtime"s exec time. "$PS1_START_TIME" ⇒ "$end_time".\e[0m"
+    fi
+    PS1_EXECUTING_CMD=0
+
+    local python_version=`PS1_python_ver_env`
+    #local git_info=`PS1_git`
+    local ssh_user=`PS1_ssh`
+    local line_num="%B%F{magenta}%I.%b "
+    local ps1_path="%B%F{blue}%3~%b"
+
+    PS1="$line_num$ssh_user$ps1_path$git_info$python_version%F{008}>%f "
+}
