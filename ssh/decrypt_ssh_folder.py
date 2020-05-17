@@ -21,20 +21,19 @@ def decrypt(key, source, decode=True):
         raise ValueError("Invalid padding...")
     return data[:-padding]  # remove the padding
 
-def decrypt_ssh_folder():
-    local_path = pathlib.Path.home()/".startup/ssh"
+def decrypt_ssh_folder(source_path, dest_path):
     password = getpass.getpass().encode('utf-8')
     password2 = getpass.getpass("Confirm Password: ").encode('utf-8')
     if password != password2:
         raise Exception("passwords didnt match")
 
-    with open(local_path/"encrypted.ssh", "r") as handle:
+    with open(source_path, "r") as handle:
         encoded_files = handle.read()
 
     files = pickle.loads(decrypt(password, encoded_files))
 
-    os.makedirs(local_path/".ssh/", exist_ok=True)
-    os.system(f"chmod 700 {local_path/'.ssh'}")
+    os.makedirs(dest_path, exist_ok=True)
+    os.system(f"chmod 700 {dest_path}")
     for fn, filedata in files:
         if fn in ["known_hosts", "authorized_keys"]:
             print(f"decrypted ssh folder contains {fn} file?")
@@ -43,14 +42,17 @@ def decrypt_ssh_folder():
             os.remove(filedata)
         except:
             pass
-        with open(local_path/".ssh"/fn, "w+") as handle:
+        with open(dest_path/fn, "w+") as handle:
             handle.write(filedata)
             if fn[-4:] == ".pub"  or fn == "config":
-                os.system(f"chmod 644 {local_path/'.ssh'/fn}")
+                os.system(f"chmod 644 {dest_path/fn}")
             else:
-                os.system(f"chmod 600 {local_path/'.ssh'/fn}")
+                os.system(f"chmod 600 {dest_path/fn}")
 
-    print("decrypted")
+    print(f"decrypted {source_path}")
 
 if __name__ == "__main__":
-    decrypt_ssh_folder()
+    local_path = pathlib.Path.home()/".setup/ssh"
+    source_path = local_path/"encrypted.ssh"
+    dest_path = local_path/".ssh"
+    decrypt_ssh_folder(source_path, dest_path)

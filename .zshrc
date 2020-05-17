@@ -42,8 +42,8 @@ alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist"
 alias glances="glances --fs-free-space"
 alias grep="grep -i"
 
-source ~/.startup/ps1_updater/update_ps1_preexec
-source ~/.startup/ps1_updater/bash-preexec.sh
+source ~/.setup/ps1_updater/update_ps1_preexec
+source ~/.setup/ps1_updater/bash-preexec.sh
 
 # manage python, pyenv, anaconda etc install
 if command -v pyenv 1>/dev/null 2>&1; then
