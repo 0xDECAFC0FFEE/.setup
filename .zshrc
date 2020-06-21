@@ -36,7 +36,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' completer _complete _correct _approximate 
 
 alias ssh-scai="ssh -tt ucla 'ssh lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
-alias tmux-jupyter="tmux new-session -d 'jupyter notebook --no-browser'"
+alias tmux-jupyter="tmux new-session -d 'jupyter lab'"
 alias youtube-dl-mp3="youtube-dl --extract-audio --audio-format mp3"
 alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s'"
 alias glances="glances --fs-free-space"
