@@ -2,6 +2,7 @@
 
 if [[ $OSTYPE == "darwin"* ]]; then
     alias ls="ls -Gah"
+    alias ip-private="ipconfig getifaddr en0"
 elif [[ $OSTYPE == "linux-gnu"* ]]; then
     alias ls="ls --color=auto -ah"
     alias nvidia-smi-watch="watch -n0.01 nvidia-smi"
@@ -10,6 +11,7 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
     alias screenshare="x11vnc -display :1 -noxrecord -noxfixes -noxdamage -forever -passwd fubar"
 
     alias minecraft-server="tmux new-session -d 'sudo ufw reload; cd ~/minecraft_server; java -Xmx1024M -Xms1024M -jar server.jar nogui'; tmux attach"
+    alias ip-private="hostname -I | awk '{print $1}'"
 
     export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
@@ -41,6 +43,7 @@ alias youtube-dl-mp3="youtube-dl --extract-audio --audio-format mp3"
 alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s'"
 alias glances="glances --fs-free-space"
 alias grep="grep -i"
+alias ip-public="curl ifconfig.me"
 
 source ~/.setup/ps1_updater/update_ps1_preexec
 source ~/.setup/ps1_updater/bash-preexec.sh
