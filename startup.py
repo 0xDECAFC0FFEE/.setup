@@ -4,6 +4,9 @@ from pathlib import Path
 
 local_path = Path().home()/".setup"
 
+print("downloading submodules (zsh-autosuggestions)")
+os.system("git submodule update --init --recursive\\")
+
 print(f"symlinking {local_path/'.zshrc'} to ~/.zshrc")
 os.system(f"ln -sf {local_path/'.zshrc'} ~/.zshrc")
 
