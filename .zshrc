@@ -10,7 +10,7 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
     alias self-control="chomper all 5760"
     alias screenshare="x11vnc -display :1 -noxrecord -noxfixes -noxdamage -forever -passwd fubar"
 
-    alias minecraft-server="tmux new-session -d 'sudo ufw reload; cd ~/minecraft_server; java -Xmx1024M -Xms1024M -jar server.jar nogui'; tmux attach"
+    alias minecraft-server="tmux-wrap 'sudo ufw reload; cd ~/minecraft_server; java -Xmx1024M -Xms1024M -jar server.jar nogui'; tmux attach"
     alias ip-private="hostname -I | awk '{print \$1}'"
 
     export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
@@ -27,8 +27,8 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
 fi
 
 HISTFILE=~/.zsh_history
-HISTSIZE=5000
-SAVEHIST=5000
+HISTSIZE=10000
+SAVEHIST=10000
 setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
@@ -38,15 +38,24 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' completer _complete _correct _approximate 
 
 alias ssh-scai="ssh -tt ucla 'ssh lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
-alias tmux-jupyter="tmux new-session -d 'jupyter lab'"
 alias youtube-dl-mp3="youtube-dl --extract-audio --audio-format mp3"
 alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s'"
 alias glances="glances --fs-free-space"
 alias grep="grep -i"
 alias ip-public="curl ifconfig.me"
 
+alias tmux-wrap="tmux new-session -d"
+alias tmux-jupyter="tmux-wrap 'jupyter lab --no-browser'"
+alias tmux-tensorboard="tmux-wrap 'tensorboard --logdir logs'"
+alias tmux-env="tmux-jupyter && tmux-tensorboard"
+function ssh_tunnel() {
+    # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
+    tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
+}
+
 source ~/.setup/ps1_updater/update_ps1_preexec
 source ~/.setup/ps1_updater/bash-preexec.sh
+source ~/.setup/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # manage python, pyenv, anaconda etc install
 if command -v pyenv 1>/dev/null 2>&1; then
