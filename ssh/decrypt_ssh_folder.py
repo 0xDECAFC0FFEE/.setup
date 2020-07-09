@@ -4,10 +4,9 @@ from Crypto.Hash import SHA256
 from Crypto import Random
 import sys
 import getpass
-import pathlib
+from pathlib import Path
 import pickle
 import os
-
 
 def decrypt(key, source, decode=True):
     if decode:
@@ -21,7 +20,11 @@ def decrypt(key, source, decode=True):
         raise ValueError("Invalid padding...")
     return data[:-padding]  # remove the padding
 
-def decrypt_ssh_folder(source_path, dest_path):
+def decrypt_ssh_folder():
+    source_path = Path(__file__).parent/"encrypted.ssh"
+    dest_path = Path(__file__).parent/".ssh"
+    print(f"decrypting {source_path} to {dest_path}")
+
     password = getpass.getpass().encode('utf-8')
     password2 = getpass.getpass("Confirm Password: ").encode('utf-8')
     if password != password2:
@@ -52,7 +55,4 @@ def decrypt_ssh_folder(source_path, dest_path):
     print(f"decrypted {source_path}")
 
 if __name__ == "__main__":
-    local_path = pathlib.Path.home()/".setup/ssh"
-    source_path = local_path/"encrypted.ssh"
-    dest_path = local_path/".ssh"
-    decrypt_ssh_folder(source_path, dest_path)
+    decrypt_ssh_folder()

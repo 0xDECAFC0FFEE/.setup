@@ -5,7 +5,7 @@ from Crypto.Hash import SHA256
 from Crypto import Random
 import sys
 import getpass
-import pathlib
+from pathlib import Path
 import pickle
 
 def encrypt(key, source, encode=True):
@@ -17,7 +17,11 @@ def encrypt(key, source, encode=True):
     data = IV + encryptor.encrypt(source)  # store the IV at the beginning and encrypt
     return base64.b64encode(data).decode("latin-1") if encode else data
 
-def encrypt_ssh_folder(source_path, dest_path):
+def encrypt_ssh_folder():
+    source_path = Path(__file__).parent/".ssh"
+    dest_path = Path(__file__).parent/"encrypted.ssh"
+    print(f"encrypting {source_path} to {dest_path}")
+
     password = getpass.getpass().encode('utf-8')
     password2 = getpass.getpass("Confirm Password: ").encode('utf-8')
     if password != password2:
@@ -28,8 +32,8 @@ def encrypt_ssh_folder(source_path, dest_path):
         if file_to_enc in ["known_hosts", "authorized_keys"]:
             continue
         with open(source_path/file_to_enc, "r") as handle:
-            file_data = handle.read()
             print("encrypting", file_to_enc)
+            file_data = handle.read()
             files.append((file_to_enc, file_data))
 
     files = encrypt(password, pickle.dumps(files))
@@ -38,7 +42,4 @@ def encrypt_ssh_folder(source_path, dest_path):
         handle.write(files)
 
 if __name__ == "__main__":
-    local_path = pathlib.Path.home()/".setup/ssh"
-    source_path = local_path/".ssh"
-    dest_path = local_path/"encrypted.ssh"
-    encrypt_ssh_folder(source_path, dest_path)
+    encrypt_ssh_folder()

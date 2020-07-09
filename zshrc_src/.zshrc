@@ -1,5 +1,3 @@
-# START=`python3 -c 'import time; print(time.time())'`
-
 if [[ $OSTYPE == "darwin"* ]]; then
     alias ls="ls -Gah"
     alias ip-private="ipconfig getifaddr en0"
@@ -53,9 +51,9 @@ function ssh_tunnel() {
     tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
 }
 
-source ~/.setup/ps1_updater/update_ps1_preexec
-source ~/.setup/ps1_updater/bash-preexec.sh
-source ~/.setup/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.setup/zshrc_src/ps1_updater/update_ps1_preexec
+source ~/.setup/zshrc_src/ps1_updater/bash-preexec.sh
+source ~/.setup/zshrc_src/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # manage python, pyenv, anaconda etc install
 if command -v pyenv 1>/dev/null 2>&1; then
@@ -86,7 +84,6 @@ fi
 if [[ $OSTYPE != "linux-gnu"* || $? == 1 ]]; then
     conda activate base
 fi
-# echo "zshrc startup time" $((`python3 -c 'import time; print(time.time())'`-$START)) "sec"
 
 if command -v pyenv-virtualenv &>/dev/null; then
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
