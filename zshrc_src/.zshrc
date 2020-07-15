@@ -21,7 +21,7 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
     bindkey '^[[1;5D' backward-word
     bindkey '^[[1;5C' forward-word
 
-    source ~/.pyenv/completions/pyenv.zsh
+    source ~/.pyenv/completions/pyenv.zsh 2>/dev/null
 fi
 
 HISTFILE=~/.zsh_history
