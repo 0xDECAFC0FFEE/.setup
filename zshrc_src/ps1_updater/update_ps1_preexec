@@ -18,7 +18,7 @@ function PS1_python_ver_env() {
             echo -n "%F{blue} "$python_version
         fi
     else
-        local python_version=`pyenv global`
+        local python_version=`pyenv global 2>/dev/null`
     fi
 
     # printing python env info
@@ -49,7 +49,9 @@ function PS1_git() {
 function PS1_ssh() {
     # if in a ssh session print the username and hostname
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        echo -n "%F{008}[%F{033}`whoami`@`hostname`%F{008}] "
+        echo -n "%F{008}[%F{033}`whoami`@`hostname`%F{008} ssh] "
+    elif [ -f /.dockerenv ]; then
+	echo -n "%F{008}[%F{033}`whoami`@`hostname`%F{008} docker] "
     fi
 }
 function precmd() {

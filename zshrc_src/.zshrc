@@ -45,6 +45,7 @@ alias ip-public="curl ifconfig.me"
 alias tmux-wrap="tmux new-session -d"
 alias tmux-jupyter="tmux-wrap 'jupyter lab --no-browser'"
 alias tmux-tensorboard="tmux-wrap 'tensorboard --logdir logs'"
+alias tmux-tensorboard-pub="tmux-wrap 'tensorboard --logdir logs --host 0.0.0.0'"
 alias tmux-env="tmux-jupyter && tmux-tensorboard"
 function ssh_tunnel() {
     # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
