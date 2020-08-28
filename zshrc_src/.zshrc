@@ -1,3 +1,10 @@
+function add_to_path() {
+    # if the path exists, add it to $PATH
+    if [ -d $1 ]; then
+        export PATH=$PATH:$1
+    fi
+}
+
 if [[ $OSTYPE == "darwin"* ]]; then
     alias ls="ls -Gah"
     alias ip-private="ipconfig getifaddr en0"
@@ -12,12 +19,12 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
     alias minecraft-server="tmux-wrap 'sudo ufw reload; cd ~/minecraft_server; java -Xmx1024M -Xms1024M -jar server.jar nogui'; tmux attach"
     alias ip-private="hostname -I | awk '{print \$1}'"
 
-    export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+    add_to_path /usr/local/cuda/bin
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-    export PATH=~/.local/bin${PATH:+:${PATH}}
-    export PATH=$PATH:/home/$USER/chomper/bin
+    add_to_path ~/.local/bin
+    add_to_path /home/$USER/chomper/bin
     export python_version_ROOT="$HOME/.pyenv"
-    export PATH="$python_version_ROOT/bin:$PATH"
+    add_to_path $python_version_ROOT/bin
 
     bindkey '^[[1;5D' backward-word
     bindkey '^[[1;5C' forward-word
@@ -63,22 +70,14 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init - --no-rehash)"
 fi
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-
 #! commenting out some conda initialization as its slow as shit and unnecessary
-# __conda_setup="$(~'/.pyenv/versions/anaconda3-2019.07/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ 1 -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
+if command -v which conda &> /dev/null; then
     if [ -f ~"/.pyenv/versions/anaconda3-2019.07/etc/profile.d/conda.sh" ]; then
         . ~"/.pyenv/versions/anaconda3-2019.07/etc/profile.d/conda.sh"
     else
-        export PATH=~"/.pyenv/versions/anaconda3-2019.07/bin:$PATH"
+        add_to_path ~/.pyenv/versions/anaconda3-2019.07/bin
     fi
-# fi
-# unset __conda_setup
-# <<< conda initialize <<<
+fi
 
 # use anaconda tf2 environment if in linux and it exists else use base
 if [[ $OSTYPE == "linux-gnu"* ]]; then
