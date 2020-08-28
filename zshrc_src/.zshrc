@@ -1,6 +1,7 @@
 if [[ $OSTYPE == "darwin"* ]]; then
     alias ls="ls -Gah"
     alias ip-private="ipconfig getifaddr en0"
+    alias new-mac="openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//' | xargs sudo ifconfig en0 ether"
 elif [[ $OSTYPE == "linux-gnu"* ]]; then
     alias ls="ls --color=auto -ah"
     alias nvidia-smi-watch="watch -n0.01 nvidia-smi"
@@ -36,6 +37,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' completer _complete _correct _approximate 
 
 alias ssh-scai="ssh -tt ucla 'ssh lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
+alias ssh-scai-tunnel="ssh -L 16006:127.0.0.1:16006 -L 8889:127.0.0.1:8889 -tt ucla 'ssh -L 16006:127.0.0.1:16006 -L 8889:127.0.0.1:8889 lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
 alias youtube-dl-mp3="youtube-dl --extract-audio --audio-format mp3"
 alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s'"
 alias glances="glances --fs-free-space"
