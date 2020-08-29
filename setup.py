@@ -1,8 +1,14 @@
-import os
+from pathlib import Path
+setup_path = Path(__file__).parent
+
+from install_scripts import install_python_packages
+install_python_packages.install_from_requirements(setup_path)
+
 from zshrc_src import init_zshrc
 from ssh import init_ssh, decrypt_ssh_folder
 from pathlib import Path
 import argparse
+import subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--disable-ssh', help='disable ssh install', action='store_true')
@@ -14,7 +20,7 @@ if not args.disable_zshrc:
     init_zshrc.link_zshrc_file()
 
 if not args.disable_fzf:
-    os.system("bash install_scripts/install_fzf.sh")
+    subprocess.call("bash {setup_path/'install_scripts'/'install_fzf.sh'}", shell=True)
 
 if not args.disable_ssh:
     decrypt_ssh_folder.decrypt_ssh_folder()
