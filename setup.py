@@ -13,15 +13,20 @@ import subprocess
 parser = argparse.ArgumentParser()
 parser.add_argument('--disable-ssh', help='disable ssh install', action='store_true')
 parser.add_argument('--disable-zshrc', help='disable linking zshrc', action='store_true')
-parser.add_argument('--disable-fzf', help='disable installing fzf', action='store_true')
+parser.add_argument('--force-zshrc', help='force .zshrc symlink even if already exists', action='store_true')
+parser.add_argument('--disable-fzf', help='disable fzf install', action='store_true')
+parser.add_argument('--overwrite-ssh', help='deletes saved ssh/encrypted.ssh and replaces it with existing ~/.ssh', action='store_true')
+
 args = parser.parse_args()
 
 if not args.disable_zshrc:
-    init_zshrc.link_zshrc_file()
+    init_zshrc.link_zshrc_file(remove_dest=args.force_zshrc)
 
 if not args.disable_fzf:
-    subprocess.call("bash {setup_path/'install_scripts'/'install_fzf.sh'}", shell=True)
+    subprocess.call(f"bash {setup_path/'install_scripts'/'install_fzf.sh'}", shell=True)
 
-if not args.disable_ssh:
+if args.overwrite_ssh:
+    init_ssh.overwrite_ssh()
+elif not args.disable_ssh:
     decrypt_ssh_folder.decrypt_ssh_folder()
     init_ssh.link_ssh_file()
