@@ -93,5 +93,5 @@ if command -v pyenv-virtualenv &>/dev/null; then
 fi
 
 # fzf
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
