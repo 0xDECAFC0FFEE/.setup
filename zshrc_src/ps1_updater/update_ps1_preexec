@@ -73,10 +73,10 @@ function precmd() {
     local python_version=`PS1_python_ver_env`
     #local git_info=`PS1_git`
     local ssh_user=`PS1_ssh`
-    local line_num="%B%F{magenta}%I.%b "
+    # local line_num="%B%F{magenta}%I.%b "
     local ps1_path="%B%F{blue}%3~%b"
 
-    PS1="$line_num$ssh_user$ps1_path$git_info$python_version%F{008}>%f "
+    PS1="$ssh_user$ps1_path$git_info$python_version%F{008}>%f "
 }
 
 

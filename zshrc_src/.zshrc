@@ -91,3 +91,7 @@ if command -v pyenv-virtualenv &>/dev/null; then
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
     eval "$(pyenv virtualenv-init -)"
 fi
+
+# fzf
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
