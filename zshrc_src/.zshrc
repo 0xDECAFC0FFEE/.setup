@@ -1,3 +1,7 @@
+# oh-my-zsh
+plugins=(git fzf-docker)
+ZSH_THEME="robbyrussell"
+
 function add_to_path() {
     # if the path exists, add it to $PATH
     if [ -d $1 ]; then
@@ -6,10 +10,16 @@ function add_to_path() {
 }
 
 if [[ $OSTYPE == "darwin"* ]]; then
+    export ZSH="/Users/LucasTong/.oh-my-zsh"
+    source $ZSH/oh-my-zsh.sh
+    
     alias ls="ls -Gah"
     alias ip-private="ipconfig getifaddr en0"
     alias new-mac="openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//' | xargs sudo ifconfig en0 ether"
 elif [[ $OSTYPE == "linux-gnu"* ]]; then
+    export ZSH="/home/lucastong/.oh-my-zsh"
+    source $ZSH/oh-my-zsh.sh
+
     alias ls="ls --color=auto -ah"
     alias nvidia-smi-watch="watch -n0.01 nvidia-smi"
     alias open="xdg-open"

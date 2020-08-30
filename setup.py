@@ -20,6 +20,8 @@ parser.add_argument('--overwrite-ssh', help='deletes saved ssh/encrypted.ssh and
 args = parser.parse_args()
 
 if not args.disable_zshrc:
+    init_zshrc.install_oh_my_zsh()
+    init_zshrc.link_oh_my_zsh_packages()
     init_zshrc.link_zshrc_file(remove_dest=args.force_zshrc)
 
 if not args.disable_fzf:
