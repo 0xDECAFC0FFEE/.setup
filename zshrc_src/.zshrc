@@ -46,6 +46,7 @@ function ssh_tunnel() {
 source $SETUP_DIR/zshrc_src/aliases.zshrc
 source $SETUP_DIR/zshrc_src/ps1_updater/update_ps1_preexec
 source $SETUP_DIR/zshrc_src/ps1_updater/bash-preexec.sh
+source $SETUP_DIR/zshrc_src/ps1_updater/zsh-git-prompt/zshrc.sh
 source $SETUP_DIR/zshrc_src/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $SETUP_DIR/zshrc_src/pyenv-conda.zshrc
 source $SETUP_DIR/zshrc_src/fzf.zshrc
