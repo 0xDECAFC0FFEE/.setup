@@ -44,9 +44,29 @@ function ssh_tunnel() {
 }
 
 source $SETUP_DIR/zshrc_src/aliases.zshrc
+# source $SETUP_DIR/zshrc_src/ps1_updater/zsh-git-prompt/zshrc.sh
+
+# function my_set_prompt() {
+#   PROMPT='%~%# '
+#   RPROMPT=''
+
+#   if gitstatus_query MY && [[ $VCS_STATUS_RESULT == ok-sync ]]; then
+#     RPROMPT=${${VCS_STATUS_LOCAL_BRANCH:-@${VCS_STATUS_COMMIT}}//\%/%%}  # escape %
+#     (( VCS_STATUS_NUM_STAGED    )) && RPROMPT+='+'
+#     (( VCS_STATUS_NUM_UNSTAGED  )) && RPROMPT+='!'
+#     (( VCS_STATUS_NUM_UNTRACKED )) && RPROMPT+='?'
+#   fi
+
+#   setopt no_prompt_{bang,subst} prompt_percent  # enable/disable correct prompt expansions
+# }
+# gitstatus_stop 'MY' && gitstatus_start -s -1 -u -1 -c -1 -d -1 'MY'
+# autoload -Uz add-zsh-hook
+# add-zsh-hook precmd my_set_prompt
+
+source $SETUP_DIR/zshrc_src/ps1_updater/gitstatus/gitstatus.prompt.zsh
 source $SETUP_DIR/zshrc_src/ps1_updater/update_ps1_preexec
+
 source $SETUP_DIR/zshrc_src/ps1_updater/bash-preexec.sh
-source $SETUP_DIR/zshrc_src/ps1_updater/zsh-git-prompt/zshrc.sh
 source $SETUP_DIR/zshrc_src/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $SETUP_DIR/zshrc_src/pyenv-conda.zshrc
 source $SETUP_DIR/zshrc_src/fzf.zshrc
