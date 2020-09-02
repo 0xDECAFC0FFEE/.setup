@@ -34,12 +34,13 @@ function gitstatus_prompt_update() {
   gitstatus_query 'MY'                  || return 1  # error
   [[ $VCS_STATUS_RESULT == 'ok-sync' ]] || return 0  # not a git repo
 
-  local      clean='%F{green}'   # green foreground
-  local   modified='%F{yellow}'  # yellow foreground
-  local  untracked='%F{008}'   # blue foreground
-  local conflicted='%F{red}'  # red foreground
+  local     branch='%F{cyan}'
+  local      clean='%F{green}'
+  local   modified='%F{yellow}'
+  local  untracked='%F{008}'
+  local conflicted='%F{red}'
 
-  local p
+  local p="\033[0m"
 
   local where  # branch name, tag or commit
   if [[ -n $VCS_STATUS_LOCAL_BRANCH ]]; then
@@ -53,7 +54,7 @@ function gitstatus_prompt_update() {
   fi
 
   (( $#where > 32 )) && where[13,-13]="…"  # truncate long branch names and tags
-  p+="${clean}${where//\%/%%}"             # escape %
+  p+="${branch}${where//\%/%%}"             # escape %
 
   # ⇣42 if behind the remote.
   (( VCS_STATUS_COMMITS_BEHIND )) && p+="${clean}⇣${VCS_STATUS_COMMITS_BEHIND}"
@@ -66,7 +67,7 @@ function gitstatus_prompt_update() {
   VCS_STATUS_NUM_STAGED || 
   VCS_STATUS_NUM_UNSTAGED || 
   VCS_STATUS_NUM_UNTRACKED)) && 
-    p+="%F{008}|"
+    p+="%F{008}\033[1m|\033[0m"
 
   # 'merge' if the repo is in an unusual state.
   [[ -n $VCS_STATUS_ACTION     ]] && p+=" ${conflicted}${VCS_STATUS_ACTION} "

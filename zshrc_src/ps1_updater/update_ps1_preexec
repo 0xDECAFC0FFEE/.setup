@@ -32,20 +32,40 @@ function PS1_python_ver_env() {
         echo -n "%F{blue} "$PYENV_VERSION
     fi
 }
+
 function PS1_git() {
     if [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == "true" ]] ; then
         gitstatus_prompt_update
-        echo -n " %F{008}($GITSTATUS_PROMPT%F{008})"
+        echo -n " %F{008}%B($GITSTATUS_PROMPT%F{008}%B)"
     fi
 }
-function PS1_ssh() {
+
+function client_info() {
     # if in a ssh session print the username and hostname
+    echo -n "%F{008}["
+    local ssh_docker
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        echo -n "%F{008}[%F{033}`whoami`@`hostname`%F{008} ssh] "
+        echo -n "%F{033}`whoami`@`hostname` "
+        ssh_docker=" ssh"
     elif [ -f /.dockerenv ]; then
-        echo -n "%F{008}[%F{033}`whoami`@`hostname`%F{008} docker] "
+        echo -n "%F{033}`whoami`@`hostname` "
+        ssh_docker=" docker"
     fi
+
+    if [[ $OSTYPE == "darwin"* ]]; then
+        echo -n "%B%F{cyan}⌘%b"
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        echo -n "%B%F{cyan}ꗝ%b"
+    elif [[ $OSTYPE == "win32" ]]; then
+        echo -n "%B%F{cyan}⊞%b"
+    fi
+    echo -n "%F{008}"
+    echo -n $ssh_docker
+    
+    echo -n "] "
 }
+
+LINENUM=0
 function precmd() {
     # printing the error code if the last line ended in an error
     local errorcode="$?"
@@ -62,13 +82,15 @@ function precmd() {
     fi
     PS1_EXECUTING_CMD=0
 
-    local python_version=`PS1_python_ver_env`
-    local git_info=`PS1_git`
-    local ssh_user=`PS1_ssh`
-    # local line_num="%B%F{magenta}%I.%b "
+    local line_num="%B%F{magenta}$LINENUM.%b "
+    LINENUM=$(($LINENUM+1))
+    local client_info=`client_info`
     local ps1_path="%B%F{blue}%3~%b"
+    local git_info=`PS1_git`
+    local python_version=`PS1_python_ver_env`
 
-    PS1="$ssh_user$ps1_path$git_info$python_version%F{008}>%f "
+    PS1="$line_num$client_info$ps1_path$git_info$python_version%F{008}%b>%f "
 }
+
 
 
