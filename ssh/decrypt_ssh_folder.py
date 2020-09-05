@@ -26,14 +26,14 @@ def decrypt_ssh_folder():
     print(f"decrypting {source_path} to {dest_path}")
 
     password = getpass.getpass().encode('utf-8')
-    password2 = getpass.getpass("Confirm Password: ").encode('utf-8')
-    if password != password2:
-        raise Exception("passwords didnt match")
-
+    
     with open(source_path, "r") as handle:
         encoded_files = handle.read()
 
-    files = pickle.loads(decrypt(password, encoded_files))
+    try:
+        files = pickle.loads(decrypt(password, encoded_files))
+    except:
+        raise Exception("password didn't match")
 
     os.makedirs(dest_path, exist_ok=True)
     os.system(f"chmod 700 {dest_path}")

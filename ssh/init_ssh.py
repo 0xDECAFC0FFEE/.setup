@@ -3,14 +3,19 @@ from pathlib import Path
 from ssh.encrypt_ssh_folder import encrypt_ssh_folder
 import shutil
 
-def link_ssh_file():
+def link_ssh_file(force_link=False):
     ssh_source = Path(__file__).resolve().parent/".ssh"
     ssh_destination = Path().home()/".ssh"
 
     if not ssh_source.exists():
         raise Exception(f".ssh source folder not found")
     if ssh_destination.exists():
-        raise Exception(f".ssh folder already exists at {ssh_destination}")
+        if force_link:
+            old_ssh_destination = Path().home()/".ssh_old"
+            shutil.move(ssh_destination, old_ssh_destination)
+            print(f"moved existing ~/.ssh folder to {old_ssh_destination}")
+        else:
+            raise Exception(f".ssh folder already exists at {ssh_destination}")
 
     print(f"symlinking {ssh_source} to {ssh_destination}")
     os.system(f"ln -sf {ssh_source} {ssh_destination}")
@@ -33,7 +38,7 @@ def overwrite_ssh():
     shutil.move(str(new_ssh_folder), str(ssh_master_location))
 
     encrypt_ssh_folder()
-    link_ssh_file()
+    link_ssh_file(force_link=True)
 
 if __name__ == "__main__":
     link_ssh_file()
