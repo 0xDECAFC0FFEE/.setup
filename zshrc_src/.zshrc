@@ -13,6 +13,7 @@ function add_to_path() {
 }
 
 if [[ $OSTYPE == "darwin"* ]]; then
+    add_to_path "$XDG_CONFIG_HOME/nvim/plugged/fzf-wordnet.vim/bin"
 elif [[ $OSTYPE == "linux-gnu"* ]]; then
     add_to_path /usr/local/cuda/bin
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}

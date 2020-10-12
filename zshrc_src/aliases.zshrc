@@ -21,7 +21,7 @@ alias ssh-scai="ssh -tt ucla 'ssh lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
 alias ssh-scai-tunnel="ssh -L 16006:127.0.0.1:16006 -L 8889:127.0.0.1:8889 -tt ucla 'ssh -L 16006:127.0.0.1:16006 -L 8889:127.0.0.1:8889 lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
 alias youtube-dl-mp3="youtube-dl --extract-audio --audio-format mp3"
 alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s'"
-alias glances="glances --fs-free-space"
+alias glances="glances --fs-free-space -1"
 alias grep="grep -i"
 alias ip-public="curl ifconfig.me"
 
