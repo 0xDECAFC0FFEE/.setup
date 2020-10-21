@@ -76,9 +76,12 @@ function precmd() {
     # printing the time it took to run the last command
     local end_time_sec=`date +%s`;
     local runtime=$((end_time_sec-PS1_START_TIME_SEC)) # yeah millisecond not exact but speed more important
-    if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME_SEC -gt 0 ]] && [[ $runtime -gt 0 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
+    if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME_SEC -gt 0 ]] && [[ $runtime -gt 5 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
         local end_time=`date +%r`;
         echo "\e[90m "$runtime"s exec time. "$PS1_START_TIME" ⇒ "$end_time".\e[0m"
+        tput bel
+        sleep .2
+        tput bel
     fi
     PS1_EXECUTING_CMD=0
 
