@@ -32,3 +32,4 @@ alias tmux-tensorboard-pub="tmux-wrap 'tensorboard --logdir logs --host 0.0.0.0'
 alias tmux-env="tmux-jupyter && tmux-tensorboard"
 alias pyenv-python3="\`pyenv which python3\`"
 alias pyenv-python="\`pyenv which python\`"
+alias git-revert="git reset --soft HEAD~1"

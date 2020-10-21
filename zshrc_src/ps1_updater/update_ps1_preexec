@@ -80,7 +80,7 @@ function precmd() {
         local end_time=`date +%r`;
         echo "\e[90m "$runtime"s exec time. "$PS1_START_TIME" ⇒ "$end_time".\e[0m"
         tput bel
-        sleep .2
+        sleep .3
         tput bel
     fi
     PS1_EXECUTING_CMD=0
