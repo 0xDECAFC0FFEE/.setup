@@ -13,8 +13,16 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
 
     alias minecraft-server="tmux-wrap 'sudo ufw reload; cd ~/minecraft_server; java -Xmx1024M -Xms1024M -jar server.jar nogui'; tmux attach"
     alias ip-private="hostname -I | awk '{print \$1}'"
-    
-    alias docker-clean="docker stop $(docker ps -aq); docker rm $(docker ps -aq); docker system prune"
+
+    if [ `command -v docker` ]; then
+        function docker-clean() {
+            containers=`docker ps -aq`
+            if [[ containers ]]; then
+                docker stop $containers
+            fi
+            docker rm `docker ps -aq`; docker system prune
+        }
+    fi
 fi
 
 alias ssh-scai="ssh -tt ucla 'ssh lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"

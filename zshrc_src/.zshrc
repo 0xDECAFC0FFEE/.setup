@@ -1,6 +1,6 @@
 export SETUP_DIR=$HOME/.setup
 
-plugins=(git fzf-docker ripgrep fzf-tab)
+plugins=(git fzf-docker ripgrep fzf-tab fzf-git)
 ZSH_THEME="robbyrussell"
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
