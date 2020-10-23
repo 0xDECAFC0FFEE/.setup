@@ -16,11 +16,18 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
 
     if [ `command -v docker` ]; then
         function docker-clean() {
-            containers=`docker ps -aq`
-            if [[ containers ]]; then
-                docker stop $containers
+            containers=`docker ps -aq --format "{{.ID}}({{.Image}}) CONTAINERSTATUS={{.Status}}"`
+            running_containers=`echo $containers | rg "(.+\(.+\)) CONTAINERSTATUS=[^E].*" -r "\\$1"`
+            if [[ running_containers ]]; then
+                echo "stopping containers "`echo $running_containers | tr "\n" " "`
+                docker stop `echo $running_containers | cut -d"(" -f1` > /dev/null
             fi
-            docker rm `docker ps -aq`; docker system prune
+            
+            if [[ containers ]]; then
+                echo "deleting containers "`echo $containers | rg "(.+\(.+\)) CONTAINERSTATUS=.*" -r "\\$1" | tr "\n" " "`
+                docker rm `echo $containers | cut -d "(" -f1` > /dev/null
+            fi
+            docker system prune -f
         }
     fi
 fi
