@@ -1,6 +1,6 @@
 export SETUP_DIR=$HOME/.setup
 
-plugins=(git fzf-docker ripgrep fzf-tab fzf-git)
+plugins=(git fzf-docker ripgrep fzf-tab fzf-git zsh-autosuggestions)
 ZSH_THEME="robbyrussell"
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -48,6 +48,5 @@ source $SETUP_DIR/zshrc_src/aliases.zshrc
 source $SETUP_DIR/zshrc_src/ps1_updater/gitstatus/gitstatus.prompt.zsh
 source $SETUP_DIR/zshrc_src/ps1_updater/update_ps1_preexec
 source $SETUP_DIR/zshrc_src/ps1_updater/bash-preexec.sh
-source $SETUP_DIR/zshrc_src/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $SETUP_DIR/zshrc_src/pyenv-conda.zshrc
 source $SETUP_DIR/zshrc_src/fzf.zshrc
