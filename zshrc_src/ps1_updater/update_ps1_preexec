@@ -42,27 +42,29 @@ function PS1_git() {
 
 function client_info() {
     # if in a ssh session print the username and hostname
-    echo -n "%F{008}["
-    local ssh_docker
+    local dockerinfo=""
+    local sshinfo=""
+    local client_info=" %F{008}["
+
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        echo -n "%F{033}`whoami`@`hostname` "
-        ssh_docker=" ssh"
-    elif [ -f /.dockerenv ]; then
-        echo -n "%F{033}`whoami`@`hostname` "
-        ssh_docker=" docker"
+        local sshinfo=" ssh"
+    fi
+    if [ -f /.dockerenv ]; then
+        local dockerinfo=" docker"
+    fi
+    if [[ $sshinfo ]] || [[ $dockerinfo ]]; then
+        client_info=$client_info"%F{033}`whoami`@`hostname` "
     fi
 
     if [[ $OSTYPE == "darwin"* ]]; then
-        echo -n "%B%F{cyan}⌘%b"
+        client_info=$client_info"%B%F{cyan}⌘%b"
     elif [[ $OSTYPE == "linux-gnu"* ]]; then
-        echo -n "%B%F{cyan}ꗝ%b"
+        client_info=$client_info"%B%F{cyan}ꗝ%b"
     elif [[ $OSTYPE == "win32" ]]; then
-        echo -n "%B%F{cyan}⊞%b"
+        client_info=$client_info"%B%F{cyan}⊞%b"
     fi
-    echo -n "%F{008}"
-    echo -n $ssh_docker
-    
-    echo -n "] "
+
+    echo -n $client_info$dockerinfo$sshinfo"%F{008}] "
 }
 
 LINENUM=0
@@ -85,7 +87,7 @@ function precmd() {
     fi
     PS1_EXECUTING_CMD=0
 
-    local line_num="%B%F{magenta}$LINENUM.%b "
+    local line_num="%B%F{magenta}$LINENUM.%b"
     LINENUM=$(($LINENUM+1))
     local client_info=`client_info`
     local ps1_path="%B%F{blue}%3~%b"

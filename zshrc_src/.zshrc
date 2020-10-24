@@ -1,7 +1,6 @@
 export SETUP_DIR=$HOME/.setup
 
 plugins=(git fzf-docker ripgrep fzf-tab fzf-git zsh-autosuggestions)
-ZSH_THEME="robbyrussell"
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -35,9 +34,6 @@ setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 autoload -Uz compinit && compinit
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' menu select
-zstyle ':completion:*' completer _complete _correct _approximate 
 
 function ssh_tunnel() {
     # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
