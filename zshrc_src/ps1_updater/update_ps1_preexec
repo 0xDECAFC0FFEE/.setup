@@ -3,68 +3,7 @@
 # update PS1
 function preexec() {
     PS1_EXECUTING_CMD=1
-    PS1_START_TIME=`date +%r`;
-    PS1_START_TIME_SEC=`date +%s`
-}
-function PS1_python_ver_env() {
-    # printing the python version and the python environment
-
-    # getting the python version
-
-    if [[ -f .python-version ]]; then
-        local python_version=`pyenv local`
-        if [[ $python_version != `pyenv global` ]]; then 
-            echo -n "%F{blue} "$python_version
-        fi
-    else
-        local python_version=`pyenv global 2>/dev/null`
-    fi
-
-    # printing python env info
-    if [[ $python_version == "anaconda"* ]]; then
-        # if python version is anaconda and not in base environment
-        local env_name=`echo $CONDA_PREFIX | rev | cut -d "/" -f1 | rev`
-        if [[ $env_name != $python_version ]]; then
-            echo -n "%F{blue} "$env_name
-        fi
-    elif [[ $python_version =~ "[0-9]\.[0-9].*" ]] && [[ $PYENV_VERSION ]]; then
-        # if python version is cython and in an environment
-        echo -n "%F{blue} "$PYENV_VERSION
-    fi
-}
-
-function PS1_git() {
-    if [[ `git rev-parse --is-inside-work-tree 2> /dev/null` == "true" ]] ; then
-        gitstatus_prompt_update
-        echo -n " %F{008}%B($GITSTATUS_PROMPT%F{008}%B)"
-    fi
-}
-
-function client_info() {
-    # if in a ssh session print the username and hostname
-    local dockerinfo=""
-    local sshinfo=""
-    local client_info=" %F{008}["
-
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        local sshinfo=" ssh"
-    fi
-    if [ -f /.dockerenv ]; then
-        local dockerinfo=" docker"
-    fi
-    if [[ $sshinfo ]] || [[ $dockerinfo ]]; then
-        client_info=$client_info"%F{033}`whoami`@`hostname` "
-    fi
-
-    if [[ $OSTYPE == "darwin"* ]]; then
-        client_info=$client_info"%B%F{cyan}⌘%b"
-    elif [[ $OSTYPE == "linux-gnu"* ]]; then
-        client_info=$client_info"%B%F{cyan}ꗝ%b"
-    elif [[ $OSTYPE == "win32" ]]; then
-        client_info=$client_info"%B%F{cyan}⊞%b"
-    fi
-
-    echo -n $client_info$dockerinfo$sshinfo"%F{008}] "
+    PS1_START_TIME=`date +%s`
 }
 
 LINENUM=0
@@ -76,25 +15,14 @@ function precmd() {
     fi
 
     # printing the time it took to run the last command
-    local end_time_sec=`date +%s`;
-    local runtime=$((end_time_sec-PS1_START_TIME_SEC)) # yeah millisecond not exact but speed more important
-    if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME_SEC -gt 0 ]] && [[ $runtime -gt 5 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
-        local end_time=`date +%r`;
-        echo "\e[90m "$runtime"s exec time. "$PS1_START_TIME" ⇒ "$end_time".\e[0m"
+    local end_time=`date +%s`;
+    local runtime=$((end_time-PS1_START_TIME)) # yeah millisecond not exact but speed more important
+    if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME -gt 0 ]] && [[ $runtime -gt 5 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
         tput bel
         sleep .3
         tput bel
     fi
     PS1_EXECUTING_CMD=0
-
-    local line_num="%B%F{magenta}$LINENUM.%b"
-    LINENUM=$(($LINENUM+1))
-    local client_info=`client_info`
-    local ps1_path="%B%F{blue}%3~%b"
-    local git_info=`PS1_git`
-    local python_version=`PS1_python_ver_env`
-
-    PS1="$line_num$client_info$ps1_path$git_info$python_version%F{008}%b>%f "
 }
 
 

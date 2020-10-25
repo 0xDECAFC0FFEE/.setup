@@ -3,14 +3,25 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init - --no-rehash)"
 fi
 
-#! commenting out some conda initialization as its slow as shit and unnecessary
-if command -v which conda &> /dev/null; then
-    if [ -f ~"/.pyenv/versions/anaconda3-2019.07/etc/profile.d/conda.sh" ]; then
-        . ~"/.pyenv/versions/anaconda3-2019.07/etc/profile.d/conda.sh"
+if [ -d ~"/.pyenv/versions/anaconda3-2019.07" ]; then # conda location in desktop/pyenv
+    conda_dir=~"/.pyenv/versions/anaconda3-2019.07"
+else
+    conda_dir="/opt/conda"
+fi
+
+__conda_setup="$($conda_dir'/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$conda_dir/etc/profile.d/conda.sh" ]; then
+        . "$conda_dir/etc/profile.d/conda.sh"
     else
-        add_to_path ~/.pyenv/versions/anaconda3-2019.07/bin
+        add_to_path "$conda_dir/bin"
     fi
 fi
+unset __conda_setup
+
+
 
 # use anaconda tf2 environment if in linux and it exists else use base
 if [[ $OSTYPE == "linux-gnu"* ]]; then

@@ -1,4 +1,11 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 export SETUP_DIR=$HOME/.setup
+
+ZSH_THEME="powerlevel10k/powerlevel10k"
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 plugins=(git fzf-docker ripgrep fzf-tab fzf-git zsh-autosuggestions)
 export ZSH=$HOME/.oh-my-zsh
@@ -35,13 +42,8 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 autoload -Uz compinit && compinit
 
-function ssh_tunnel() {
-    # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
-    tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
-}
-
 source $SETUP_DIR/zshrc_src/aliases.zshrc
-source $SETUP_DIR/zshrc_src/ps1_updater/gitstatus/gitstatus.prompt.zsh
+# source $SETUP_DIR/zshrc_src/ps1_updater/gitstatus/gitstatus.prompt.zsh
 source $SETUP_DIR/zshrc_src/ps1_updater/update_ps1_preexec
 source $SETUP_DIR/zshrc_src/ps1_updater/bash-preexec.sh
 source $SETUP_DIR/zshrc_src/pyenv-conda.zshrc

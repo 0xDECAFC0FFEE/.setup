@@ -26,6 +26,11 @@ def link_oh_my_zsh_packages():
     print(Path(__file__).resolve().parent/'oh-my-zsh-plugins')
     os.system(f"ln -s {Path(__file__).resolve().parent/'oh-my-zsh-plugins'} ~/.oh-my-zsh/plugins")
 
+    # symlinking oh-my-zsh themes
+    os.system("rm -r ~/.oh-my-zsh/themes")
+    print(Path(__file__).resolve().parent/'oh-my-zsh-themes')
+    os.system(f"ln -s {Path(__file__).resolve().parent/'oh-my-zsh-themes'} ~/.oh-my-zsh/themes")
+
 def install_oh_my_zsh():
     oh_my_zsh_install_location = os.environ.get("ZSH", False)
     if not oh_my_zsh_install_location or not Path(oh_my_zsh_install_location).exists():
@@ -33,6 +38,23 @@ def install_oh_my_zsh():
         os.system('sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended --keep-zshrc"')
     else:
         print("skipping oh-my-zsh install - already detected")
+
+def link_p10krc_file(force_link=False):
+    p10krc_source = Path(__file__).resolve().parent/".p10k.zsh"
+    p10krc_destination = Path().home()/".p10k.zsh"
+
+    if not p10krc_source.exists():
+        raise Exception(f".p10k.zsh source file not found")
+    if p10krc_destination.exists():
+        if force_link:
+            old_p10krc_destination = Path().home()/".p10k.zsh"
+            shutil.move(p10krc_destination, old_p10krc_destination)
+            print(f"moved existing ~/.p10k.zsh file to {old_p10krc_destination}")
+        else:
+            raise Exception(f".p10k.zsh file already exists at {p10krc_destination}")
+
+    print(f"symlinking {p10krc_source} to {p10krc_destination}")
+    os.system(f"ln -sf {p10krc_source} {p10krc_destination}")
 
 if __name__ == "__main__":
     install_oh_my_zsh()
