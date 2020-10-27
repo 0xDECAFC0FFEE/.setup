@@ -22,14 +22,16 @@ def link_zshrc_file(force_link=False):
 
 def link_oh_my_zsh_packages():
     # symlinking oh-my-zsh packages in .setup
-    os.system("rm -r ~/.oh-my-zsh/plugins")
-    print(Path(__file__).resolve().parent/'oh-my-zsh-plugins')
-    os.system(f"ln -s {Path(__file__).resolve().parent/'oh-my-zsh-plugins'} ~/.oh-my-zsh/plugins")
+    source_plugins = Path(__file__).resolve().parent/'oh-my-zsh-plugins'
+    dest_plugins = Path('~/.oh-my-zsh/custom/plugins')
+    os.system(f"rm -r {dest_plugins}")
+    os.system(f"ln -s {source_plugins} {dest_plugins}")
 
     # symlinking oh-my-zsh themes
-    os.system("rm -r ~/.oh-my-zsh/themes")
-    print(Path(__file__).resolve().parent/'oh-my-zsh-themes')
-    os.system(f"ln -s {Path(__file__).resolve().parent/'oh-my-zsh-themes'} ~/.oh-my-zsh/themes")
+    source_themes = Path(__file__).resolve().parent/'oh-my-zsh-themes'
+    dest_themes = Path("~/.oh-my-zsh/custom/themes")
+    os.system(f"rm -r {dest_themes}")
+    os.system(f"ln -s {source_themes} {dest_themes}")
 
 def install_oh_my_zsh():
     oh_my_zsh_install_location = os.environ.get("ZSH", False)

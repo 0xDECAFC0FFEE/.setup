@@ -35,7 +35,7 @@
     docker
     context                 # user@hostname
     dir                     # current directory
-    prompt_char             # prompt symbol
+    prompt_char_joined             # prompt symbol
   )
 
   # The list of segments shown on the right. Fill it with less important segments.
@@ -104,9 +104,12 @@
   )
 
   export P10K_LINE_NUM=1
-  function prompt_linenum(){
+  function prompt_linenum() {
     p10k segment -f 5 -t "$P10K_LINE_NUM."
     P10K_LINE_NUM=$[$P10K_LINE_NUM+1]
+  }
+  function instant_prompt_linenum() {
+    p10k segment -f 5 -t "1."
   }
 
   function prompt_docker() {
@@ -114,6 +117,10 @@
       p10k segment -t "%F{cyan}docker"
     fi
   }
+  function instant_prompt_docker() {
+    prompt_docker
+  }
+
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
   typeset -g POWERLEVEL9K_MODE=nerdfont-complete
@@ -215,7 +222,7 @@
   typeset -g POWERLEVEL9K_DIR_FOREGROUND=4
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
-  typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
+  typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
@@ -263,7 +270,7 @@
   # respectively.
   typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER=false
   # Don't shorten this many last directory segments. They are anchors.
-  typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+  typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=4
   # Shorten directory if it's longer than this even if there is space for it. The value can
   # be either absolute (e.g., '80') or a percentage of terminal width (e.g, '50%'). If empty,
   # directory will be shortened only when prompt doesn't fit or when other parameters demand it
@@ -1570,3 +1577,6 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+
+# change mac os icon to the cmd button
+export POWERLEVEL9K_APPLE_ICON='\uFB32'

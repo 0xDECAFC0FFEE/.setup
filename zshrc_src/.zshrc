@@ -41,6 +41,7 @@ setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 autoload -Uz compinit && compinit
+_comp_options+=(globdots)
 
 source $SETUP_DIR/zshrc_src/aliases.zshrc
 # source $SETUP_DIR/zshrc_src/ps1_updater/gitstatus/gitstatus.prompt.zsh
