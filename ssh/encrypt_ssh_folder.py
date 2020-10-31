@@ -1,21 +1,16 @@
 import os
 import base64
 from Crypto.Cipher import AES
-from Crypto.Hash import SHA256
-from Crypto import Random
 import sys
 import getpass
 from pathlib import Path
 import pickle
 
-def encrypt(key, source, encode=True):
-    key = SHA256.new(key).digest()  # use SHA-256 over our key to get a proper-sized AES key
-    IV = Random.new().read(AES.block_size)  # generate IV
-    encryptor = AES.new(key, AES.MODE_CBC, IV)
-    padding = AES.block_size - len(source) % AES.block_size  # calculate needed padding
-    source += bytes([padding]) * padding  # Python 2.x: source += chr(padding) * padding
-    data = IV + encryptor.encrypt(source)  # store the IV at the beginning and encrypt
-    return base64.b64encode(data).decode("latin-1") if encode else data
+def encrypt(key, data, encode=True):
+    key = key[:32].zfill(32)
+    cipher = AES.new(key, AES.MODE_EAX)
+    ciphertext, tag = cipher.encrypt_and_digest(data)
+    return pickle.dumps((cipher.nonce, tag, ciphertext))
 
 def encrypt_ssh_folder():
     source_path = Path(__file__).parent/".ssh"
@@ -36,10 +31,10 @@ def encrypt_ssh_folder():
             file_data = handle.read()
             files.append((file_to_enc, file_data))
 
-    files = encrypt(password, pickle.dumps(files))
+    encrypted_files = encrypt(password, pickle.dumps(files))
 
-    with open(dest_path, "w+") as handle:
-        handle.write(files)
+    with open(dest_path, "wb+") as handle:
+        handle.write(encrypted_files)
 
 if __name__ == "__main__":
     encrypt_ssh_folder()

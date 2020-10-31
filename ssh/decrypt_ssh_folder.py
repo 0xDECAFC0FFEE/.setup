@@ -8,17 +8,12 @@ from pathlib import Path
 import pickle
 import os
 
-def decrypt(key, source, decode=True):
-    if decode:
-        source = base64.b64decode(source.encode("latin-1"))
-    key = SHA256.new(key).digest()  # use SHA-256 over our key to get a proper-sized AES key
-    IV = source[:AES.block_size]  # extract the IV from the beginning
-    decryptor = AES.new(key, AES.MODE_CBC, IV)
-    data = decryptor.decrypt(source[AES.block_size:])  # decrypt
-    padding = data[-1]  # pick the padding value from the end; Python 2.x: ord(data[-1])
-    if data[-padding:] != bytes([padding]) * padding:  # Python 2.x: chr(padding) * padding
-        raise ValueError("Invalid padding...")
-    return data[:-padding]  # remove the padding
+def decrypt(key, source):
+    key = key[:32].zfill(32)
+    nonce, tag, ciphertext = pickle.loads(source)
+    cipher = AES.new(key, AES.MODE_EAX, nonce)
+    data = cipher.decrypt_and_verify(ciphertext, tag)
+    return data
 
 def decrypt_ssh_folder():
     source_path = Path(__file__).parent/"encrypted.ssh"
@@ -26,12 +21,12 @@ def decrypt_ssh_folder():
     print(f"decrypting {source_path} to {dest_path}")
 
     password = getpass.getpass().encode('utf-8')
-    
-    with open(source_path, "r") as handle:
-        encoded_files = handle.read()
+
+    with open(source_path, "rb") as handle:
+        cipherinfo = handle.read()
 
     try:
-        files = pickle.loads(decrypt(password, encoded_files))
+        files = pickle.loads(decrypt(password, cipherinfo))
     except:
         raise Exception("password didn't match")
 
