@@ -6,6 +6,12 @@ function preexec() {
     PS1_START_TIME=`date +%s`
 }
 
+function ring_bell() {
+    tput bel
+    sleep .3
+    tput bel
+}
+
 LINENUM=0
 function precmd() {
     # printing the error code if the last line ended in an error
@@ -18,9 +24,7 @@ function precmd() {
     local end_time=`date +%s`;
     local runtime=$((end_time-PS1_START_TIME)) # yeah millisecond not exact but speed more important
     if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME -gt 0 ]] && [[ $runtime -gt 5 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
-        tput bel
-        sleep .3
-        tput bel
+        (ring_bell &)
     fi
     PS1_EXECUTING_CMD=0
 }

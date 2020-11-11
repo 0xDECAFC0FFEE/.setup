@@ -1580,3 +1580,4 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 # change mac os icon to the cmd button
 export POWERLEVEL9K_APPLE_ICON='\uFB32'
+export PROMPT_EOL_MARK='' 
