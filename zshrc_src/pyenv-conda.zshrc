@@ -5,6 +5,8 @@ fi
 
 if [ -d ~"/.pyenv/versions/anaconda3-2019.07" ]; then # conda location in desktop/pyenv
     conda_dir=~"/.pyenv/versions/anaconda3-2019.07"
+elif [ -f "/usr/local/bin/conda" ]; then
+    conda_dir="/usr/local"
 else
     conda_dir="/opt/conda"
 fi
