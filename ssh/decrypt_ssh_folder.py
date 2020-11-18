@@ -1,7 +1,4 @@
 import base64
-from Crypto.Cipher import AES
-from Crypto.Hash import SHA256
-from Crypto import Random
 import sys
 import getpass
 from pathlib import Path
@@ -9,6 +6,7 @@ import pickle
 import os
 
 def decrypt(key, source):
+    from Crypto.Cipher import AES
     key = key[:32].zfill(32)
     nonce, tag, ciphertext = pickle.loads(source)
     cipher = AES.new(key, AES.MODE_EAX, nonce)

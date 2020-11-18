@@ -1,12 +1,12 @@
 import os
 import base64
-from Crypto.Cipher import AES
 import sys
 import getpass
 from pathlib import Path
 import pickle
 
 def encrypt(key, data, encode=True):
+    from Crypto.Cipher import AES
     key = key[:32].zfill(32)
     cipher = AES.new(key, AES.MODE_EAX)
     ciphertext, tag = cipher.encrypt_and_digest(data)
