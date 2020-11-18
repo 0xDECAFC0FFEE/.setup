@@ -47,9 +47,10 @@ alias tmux-tensorboard-pub="tmux-wrap 'tensorboard --logdir logs --host 0.0.0.0'
 alias tmux-env="tmux-jupyter && tmux-tensorboard"
 alias pyenv-python3="\`pyenv which python3\`"
 alias pyenv-python="\`pyenv which python\`"
-alias git-revert="git reset --soft HEAD~1"
+alias git-reset-soft="git reset --soft HEAD~1"
 
 function ssh_tunnel() {
     # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
     tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
 }
+
