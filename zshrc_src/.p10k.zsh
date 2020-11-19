@@ -103,7 +103,7 @@
     # example               # example user-defined segment (see prompt_example function below)
   )
 
-  export P10K_LINE_NUM=1
+  export P10K_LINE_NUM=0
   function prompt_linenum() {
     p10k segment -f 5 -t "$P10K_LINE_NUM."
     P10K_LINE_NUM=$[$P10K_LINE_NUM+1]

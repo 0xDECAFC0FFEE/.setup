@@ -7,9 +7,14 @@ function preexec() {
 }
 
 function ring_bell() {
-    tput bel
-    sleep .3
-    tput bel
+    if [ ! -n "$SSH_CLIENT" ] && [ ! -n "$SSH_TTY" ] && [[ $OSTYPE == "darwin"* ]]; then
+        # workaround so vscode integrated terminal would ring bell on macs at least
+        osascript -e "beep beep"
+    else
+        tput bel
+        sleep .3
+        tput bel
+    fi
 }
 
 LINENUM=0
