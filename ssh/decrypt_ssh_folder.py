@@ -25,7 +25,7 @@ def decrypt_ssh_folder():
 
     try:
         files = pickle.loads(decrypt(password, cipherinfo))
-    except:
+    except ValueError:
         raise Exception("password didn't match")
 
     os.makedirs(dest_path, exist_ok=True)
