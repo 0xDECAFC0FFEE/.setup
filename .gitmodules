@@ -1,0 +1,9 @@
+[submodule "zshrc_src/oh-my-zsh-plugins/fzf-tab"]
+	path = zshrc_src/oh-my-zsh-plugins/fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab
+[submodule "zshrc_src/oh-my-zsh-plugins/fzf-docker"]
+	path = zshrc_src/oh-my-zsh-plugins/fzf-docker
+	url = https://github.com/pierpo/fzf-docker
+[submodule "zshrc_src/oh-my-zsh-plugins/zsh-autosuggestions"]
+	path = zshrc_src/oh-my-zsh-plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions

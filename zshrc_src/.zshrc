@@ -9,7 +9,7 @@ export SETUP_DIR=$HOME/.setup
 ZSH_THEME="powerlevel10k/powerlevel10k"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-plugins=(git fzf-docker ripgrep fzf-tab fzf-git zsh-autosuggestions)
+plugins=(git fzf-docker ripgrep fzf-tab zsh-autosuggestions)
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
