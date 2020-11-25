@@ -25,6 +25,7 @@ if not args.disable_zshrc:
     init_zshrc.link_oh_my_zsh_packages()
     init_zshrc.link_zshrc_file(force_link=True)
     init_zshrc.link_p10krc_file(force_link=True)
+    init_zshrc.link_tmux_rc_file(force_link=True)
 
 if args.overwrite_ssh:
     init_ssh.overwrite_ssh()

@@ -40,6 +40,7 @@ alias glances="glances --fs-free-space -1"
 alias grep="grep -i"
 alias ip-public="curl ifconfig.me"
 
+# alias tmux="tmux -2"
 alias tmux-wrap="tmux new-session -d"
 alias tmux-jupyter="tmux-wrap 'jupyter lab --no-browser'"
 alias tmux-tensorboard="tmux-wrap 'tensorboard --logdir logs'"

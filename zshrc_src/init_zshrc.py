@@ -4,14 +4,14 @@ import re
 import shutil
 
 def link_zshrc_file(force_link=False):
-    zshrc_source = Path(__file__).resolve().parent/".zshrc"
+    zshrc_source = Path(__file__).resolve().parent/"rc_dotfiles"/".zshrc"
     zshrc_destination = Path().home()/".zshrc"
 
     if not zshrc_source.exists():
         raise Exception(f".zshrc source file not found")
     if zshrc_destination.exists():
         if force_link:
-            old_zshrc_destination = Path().home()/".zshrc_old"
+            old_zshrc_destination = Path().home()/".zshrc.old"
             shutil.move(zshrc_destination, old_zshrc_destination)
             print(f"moved existing ~/.zshrc file to {old_zshrc_destination}")
         else:
@@ -42,14 +42,14 @@ def install_oh_my_zsh():
         print("skipping oh-my-zsh install - already detected")
 
 def link_p10krc_file(force_link=False):
-    p10krc_source = Path(__file__).resolve().parent/".p10k.zsh"
+    p10krc_source = Path(__file__).resolve().parent/"rc_dotfiles"/".p10k.zsh"
     p10krc_destination = Path().home()/".p10k.zsh"
 
     if not p10krc_source.exists():
         raise Exception(f".p10k.zsh source file not found")
     if p10krc_destination.exists():
         if force_link:
-            old_p10krc_destination = Path().home()/".p10k.zsh"
+            old_p10krc_destination = Path().home()/".p10k.zsh.old"
             shutil.move(p10krc_destination, old_p10krc_destination)
             print(f"moved existing ~/.p10k.zsh file to {old_p10krc_destination}")
         else:
@@ -58,7 +58,19 @@ def link_p10krc_file(force_link=False):
     print(f"symlinking {p10krc_source} to {p10krc_destination}")
     os.system(f"ln -sf {p10krc_source} {p10krc_destination}")
 
-if __name__ == "__main__":
-    install_oh_my_zsh()
-    link_oh_my_zsh_packages()
-    link_zshrc_file(True)
+def link_tmux_rc_file(force_link=True):
+    tmux_rc_source = Path(__file__).resolve().parent/"rc_dotfiles"/".tmux.conf"
+    tmux_rc_destination = Path().home()/".tmux.conf"
+
+    if not tmux_rc_source.exists():
+        raise Exception(f".tmux.conf source file not found")
+    if tmux_rc_destination.exists():
+        if force_link:
+            old_tmux_rc_destination = Path().home()/".tmux.conf.old"
+            shutil.move(tmux_rc_destination, old_tmux_rc_destination)
+            print(f"moved existing ~/.tmux.conf file to {old_tmux_rc_destination}")
+        else:
+            raise Exception(f".tmux.conf file already exists at {tmux_rc_destination}")
+
+    print(f"symlinking {tmux_rc_source} to {tmux_rc_destination}")
+    os.system(f"ln -sf {tmux_rc_source} {tmux_rc_destination}")

@@ -1,5 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -45,9 +43,9 @@ setopt HIST_IGNORE_SPACE
 autoload -Uz compinit && compinit
 _comp_options+=(globdots)
 
-source $SETUP_DIR/zshrc_src/aliases.zshrc
-# source $SETUP_DIR/zshrc_src/ps1_updater/gitstatus/gitstatus.prompt.zsh
-source $SETUP_DIR/zshrc_src/ps1_updater/update_ps1_preexec
-source $SETUP_DIR/zshrc_src/ps1_updater/bash-preexec.sh
-source $SETUP_DIR/zshrc_src/fzf.zshrc
-source $SETUP_DIR/zshrc_src/pyenv-conda.zshrc
+dotfile_dir=$SETUP_DIR/zshrc_src/rc_dotfiles
+source $dotfile_dir/aliases.zshrc
+source $dotfile_dir/ps1_updater/update_ps1_preexec
+source $dotfile_dir/ps1_updater/bash-preexec.sh
+source $dotfile_dir/fzf.zshrc
+source $dotfile_dir/pyenv-conda.zshrc
