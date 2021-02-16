@@ -12,6 +12,25 @@ if [[ $OSTYPE == "darwin"* ]]; then
         alias asdf-umount="((cd ~; diskutil unmount force ~/temp/asdf; diskutil unmount force ~/temp/.asdf) &) &> /dev/null"
     fi
 
+    function reddit_downloader() {
+        # sshes into desktop and starts up reddit downloader, gets ip address from ssh config file and opens in browser
+        desktop_local_ip=`ssh-config-ip desktop-local`
+        if [ $desktop_local_ip ]; then
+            ssh desktop-local -f "tmux new-session -d '~/RedditDownloader/run.sh'"
+            sleep .5
+            open "http://"$desktop_local_ip":7505/index.html"
+        else
+            desktop_ip=`ssh-config-ip desktop`
+            if [ $desktop_ip ]; then
+                ssh desktop -f "tmux new-session -d '~/RedditDownloader/run.sh'"
+                sleep .5
+                open "http://"$desktop_ip":7505/index.html"
+            else
+                echo "DESKTOP IP NOT FOUND"
+            fi
+        fi
+    }
+
 elif [[ $OSTYPE == "linux-gnu"* ]]; then
     alias ls="ls --color=auto -ah"
     alias nvidia-smi-watch="watch -n0.01 nvidia-smi"
@@ -37,12 +56,18 @@ elif [[ $OSTYPE == "linux-gnu"* ]]; then
 
     alias asdf-mount="trap 'asdf-umount' EXIT && encfs /media/lucastong/bulk_storage/.asdf ~/temp/asdf"
     alias asdf-umount="(cd ~; fuser -k ~/temp/asdf; fusermount -u ~/temp/asdf) &"
+
+    function reddit_downloader() {
+        # starts up reddit downloader and opens in browser
+        tmux new-session -d '~/RedditDownloader/run.sh'
+        open "http://0.0.0.0:7505/index.html"
+    }
 fi
 
 alias ssh-scai="ssh -tt ucla 'ssh lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
 alias ssh-scai-tunnel="ssh -L 16006:127.0.0.1:16006 -L 8889:127.0.0.1:8889 -tt ucla 'ssh -L 16006:127.0.0.1:16006 -L 8889:127.0.0.1:8889 lucas_tong@scai1.cs.ucla.edu -i ~/.ssh/lab'"
 alias youtube-dl-mp3="youtube-dl --extract-audio --audio-format mp3"
-alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s'"
+alias youtube-dl="pip install --upgrade youtube-dl; youtube-dl --no-playlist -o '%(title)s.%(ext)s' -f best"
 alias glances="glances --fs-free-space -1"
 alias grep="grep -i"
 alias ip-public="curl ifconfig.me"
@@ -57,7 +82,9 @@ alias pyenv-python3="\`pyenv which python3\`"
 alias pyenv-python="\`pyenv which python\`"
 alias git-reset-soft="git reset --soft HEAD~1"
 
-
+function ssh-config-ip() {
+    ssh $1 -v -f "exit" |& grep "Authenticated to " | cut -d " " -f 3
+}
 
 function ssh_tunnel() {
     # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
