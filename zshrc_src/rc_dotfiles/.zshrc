@@ -4,6 +4,7 @@ fi
 
 export SETUP_DIR=$HOME/.setup
 
+export DISABLE_AUTO_UPDATE=true
 ZSH_THEME="powerlevel10k/powerlevel10k"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
