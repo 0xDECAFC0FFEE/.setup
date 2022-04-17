@@ -21,6 +21,10 @@ function add_to_path() {
 
 if [[ $OSTYPE == "darwin"* ]]; then
     add_to_path "$XDG_CONFIG_HOME/nvim/plugged/fzf-wordnet.vim/bin"
+    
+    export LDFLAGS="-L/usr/local/opt/zlib/lib"
+    export CPPFLAGS="-I/usr/local/opt/zlib/include"
+    export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 elif [[ $OSTYPE == "linux-gnu"* ]]; then
     add_to_path /usr/local/cuda/bin
     export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
@@ -50,3 +54,5 @@ source $dotfile_dir/ps1_updater/update_ps1_preexec
 source $dotfile_dir/ps1_updater/bash-preexec.sh
 source $dotfile_dir/fzf.zshrc
 source $dotfile_dir/pyenv-conda.zshrc
+
+chpwd() ls

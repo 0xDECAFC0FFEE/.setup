@@ -4,6 +4,7 @@
 function preexec() {
     PS1_EXECUTING_CMD=1
     PS1_START_TIME=`date +%s`
+    echo "\e[90m"`date`"\e[39;0m"
 }
 
 function ring_bell() {
@@ -22,7 +23,7 @@ function precmd() {
     # printing the error code if the last line ended in an error
     local errorcode="$?"
     if [ ${errorcode} != 0 ]; then
-        echo "\e[90m┗❰\e[1;31merror $errorcode\e[90m❱\e[39;0m"
+        echo -e "\e[90m┗❰\e[1;31merror $errorcode\e[90m❱\e[39;0m \c"
     fi
 
     # printing the time it took to run the last command
@@ -30,6 +31,7 @@ function precmd() {
     local runtime=$((end_time-PS1_START_TIME)) # yeah millisecond not exact but speed more important
     if [[ -v PS1_START_TIME ]] && [[ $PS1_START_TIME -gt 0 ]] && [[ $runtime -gt 5 ]] && [[ $PS1_EXECUTING_CMD -eq 1 ]]; then
         (ring_bell &)
+        echo "\e[90m祥"$runtime"s\e[39;0m\c"
     fi
     PS1_EXECUTING_CMD=0
 }
