@@ -81,6 +81,7 @@ alias tmux-env="tmux-jupyter && tmux-tensorboard"
 alias pyenv-python3="\`pyenv which python3\`"
 alias pyenv-python="\`pyenv which python\`"
 alias git-reset-soft="git reset --soft HEAD~1"
+alias c="caffeinate -disu"
 
 function ssh-config-ip() {
     ssh $1 -v -f "exit" |& grep "Authenticated to " | cut -d " " -f 3

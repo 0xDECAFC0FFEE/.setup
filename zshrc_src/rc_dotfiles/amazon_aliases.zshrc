@@ -1,5 +1,3 @@
-source /apollo/env/envImprovement/var/zshrc
-
 export PATH=$HOME/.toolbox/bin:$PATH
 export PATH=$HOME/jdk-11.0.13+8/bin:$PATH
 
