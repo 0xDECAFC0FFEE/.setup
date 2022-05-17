@@ -91,17 +91,40 @@ function ssh_tunnel() {
     tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
 }
 
-alias frep='python3 -c "import os
+frep_python_command='import os
 import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument(\"--name\", \"-n\", help=\"file name\", default=\"\", type=str)
-parser.add_argument(\"search_string\", metavar=\"N\", type=str, nargs=\"+\", help=\"string to search for\")
+
+parser = argparse.ArgumentParser(description="search through filenames and text in working directory recursively")
+parser.add_argument("--name", "-n", help="file name", default="", type=str)
+parser.add_argument("--type", "-t", help="file type", default="", type=str)
+parser.add_argument("--no-fzf", help="disable fzf", action="store_true", dest="nofzf")
+parser.add_argument("search_string", metavar="search string", type=str, nargs="+", help="string to search for")
 args=parser.parse_args()
-joined_search_string = \" \".join(args.search_string)
-if args.name == \"\":
-    os.system(f\"grep -r --ignore-case -I \\\"{joined_search_string}\\\" .\")
-else:
-    os.system(f\"grep -r --ignore-case --include \\\"*.{args.name}\\\" -I \\\"{joined_search_string}\\\" .\")
+joined_search_string = " ".join(args.search_string)
+filename = f"*.{args.type}" if args.type else args.name
+
+commands = []
 if len(args.search_string) == 1:
-    os.system(f\"find . -iname \\\"*{joined_search_string}*\\\"\")
-"'
+    commands.append(f"find . -iname \"*{joined_search_string}*\"")
+if filename == "":
+    commands.append(f"grep -nrI --ignore-case \"{joined_search_string}\" .")
+else:
+    commands.append(f"grep -nrI --ignore-case --include \"{filename}\" \"{joined_search_string}\" .")
+command = "; ".join(commands)
+
+if args.nofzf:
+    os.system(command)
+else:
+    output = os.popen(command).read()
+    escaped_characters = {c:"\\"+c for c in ["\"", "$", "`", "\\"]}
+    output = output.translate(str.maketrans(escaped_characters))
+    if len(output.split("\n")) < 20:
+        os.system(f"echo \"{output}\"")
+    else:
+        os.system(f"echo \"{output}\" | fzf --no-sort")'
+
+if command -v fzf &> /dev/null; then
+    alias frep="python3 -c '$frep_python_command'"
+else
+    alias frep="python3 -c '$frep_python_command' --no-fzf"
+fi
