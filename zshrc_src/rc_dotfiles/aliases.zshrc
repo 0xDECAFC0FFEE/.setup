@@ -91,3 +91,17 @@ function ssh_tunnel() {
     tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
 }
 
+alias frep='python3 -c "import os
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(\"--name\", \"-n\", help=\"file name\", default=\"\", type=str)
+parser.add_argument(\"search_string\", metavar=\"N\", type=str, nargs=\"+\", help=\"string to search for\")
+args=parser.parse_args()
+joined_search_string = \" \".join(args.search_string)
+if args.name == \"\":
+    os.system(f\"grep -r --ignore-case -I \\\"{joined_search_string}\\\" .\")
+else:
+    os.system(f\"grep -r --ignore-case --include \\\"*.{args.name}\\\" -I \\\"{joined_search_string}\\\" .\")
+if len(args.search_string) == 1:
+    os.system(f\"find . -iname \\\"*{joined_search_string}*\\\"\")
+"'
