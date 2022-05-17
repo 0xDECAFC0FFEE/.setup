@@ -1,8 +1,10 @@
+export SETUP_DIR=$HOME/.setup
+dotfile_dir=$SETUP_DIR/zshrc_src/rc_dotfiles
+# source $dotfile_dir/amazon_aliases.zshrc
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-export SETUP_DIR=$HOME/.setup
 
 export DISABLE_AUTO_UPDATE=true
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -48,7 +50,6 @@ setopt HIST_IGNORE_SPACE
 autoload -Uz compinit && compinit
 _comp_options+=(globdots)
 
-dotfile_dir=$SETUP_DIR/zshrc_src/rc_dotfiles
 source $dotfile_dir/aliases.zshrc
 source $dotfile_dir/ps1_updater/update_ps1_preexec
 source $dotfile_dir/ps1_updater/bash-preexec.sh
