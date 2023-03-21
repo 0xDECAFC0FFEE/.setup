@@ -11,6 +11,10 @@ export SAM_ASSUME_ACCOUNT_ID="219339085096"
 export CONDUIT_ADMIN_ACCOUNT_ID=219339085096
 export CONDUIT_ADMIN_ACCOUNT_ROLE="IibsAdminAccess-DO-NOT-DELETE"
 export PERSONAL_ACCOUNT_ID=$CONDUIT_ADMIN_ACCOUNT_ID
+export TEST_DISAMBIGUATOR=tongluca-test
+export DEVELOPER_ACCOUNT_ID=219339085096
+export DEVELOPER_ACCOUNT_NAME=tongluca-personal
+export AWS_EC2_METADATA_DISABLED=true
 
 function kcurl() {
   curl -k --location-trusted --negotiate -u: -c /tmp/cookies.txt -b /tmp/cookies.txt "$@"
@@ -21,6 +25,8 @@ alias bre='brazil-runtime-exec'
 alias bbb-clean='brazil-recursive-cmd --allPackages brazil-build --reverse clean'
 
 # export TOD_CUSTOMER_CREDENTIAL_PATH=/home/tongluca/.aws/credentials
+
+export APOLLO_ACTUAL_ENVIRONMENT_ROOT=/apollo/env/DevDesktopAL2
 
 function git-reattach-head() {
     if [ "$#" -eq 1 ]; then

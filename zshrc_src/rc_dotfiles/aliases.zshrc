@@ -92,6 +92,12 @@ function ssh_tunnel() {
     tmux-wrap "ssh -L $3:127.0.0.1:$2 $1"
 }
 
+function for_each_subdir() {
+    # creates a tmuxed ssh tunnel from ip address arg1, port arg2 to localhost, port arg3
+    args="$@"
+    ls -d */ | xargs -I {} zsh -c "cd '{}' && printf '\n====================================================================\ncding into ' && pwd && $args"
+}
+
 frep_python_command='import os
 import argparse
 
@@ -122,7 +128,13 @@ else:
     if len(output.split("\n")) < 20:
         os.system(f"echo \"{output}\"")
     else:
-        os.system(f"echo \"{output}\" | fzf --no-sort")'
+        os.system(f"echo \"{output}\" | fzf")'
+
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+    opencmd="code"
+else
+    opencmd="open"
+fi
 
 if command -v fzf &> /dev/null; then
     alias frep="python3 -c '$frep_python_command'"
