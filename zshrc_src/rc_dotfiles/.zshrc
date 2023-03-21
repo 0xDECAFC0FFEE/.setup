@@ -8,7 +8,7 @@ export DISABLE_AUTO_UPDATE=true
 ZSH_THEME="powerlevel10k/powerlevel10k"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-plugins=(git fzf-docker ripgrep fzf-tab zsh-autosuggestions)
+plugins=(git fzf-docker ripgrep fzf-tab zsh-autosuggestions zsh-fzf-history-search)
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
